@@ -1,4 +1,4 @@
-
+// script.js
 import { MAPBOX_ACCESS_TOKEN, MAPBOX_STYLE_URL } from './config.js';
 
 mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
