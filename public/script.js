@@ -1,6 +1,5 @@
-import { MAPBOX_ACCESS_TOKEN, MAPBOX_STYLE_URL } from './config.js';
 
-mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
+mapboxgl.accessToken = 'pk.eyJ1IjoiYXJuYXVpbmVzIiwiYSI6ImNsdnFjY3hiMjBkbDQybG1oaDl1MmZxN3IifQ.w9MXQRTssGGK-k7y6OZQSQ';
 
 const filterMapping = {
   'PSOE': ['PSOE', 'PSE-EE-(PSOE)', 'PSC', 'PSIB-PSOE', 'PSdeG-PSOE', 'PSN-PSOE'],
@@ -9,7 +8,7 @@ const filterMapping = {
 
 const map = new mapboxgl.Map({
   container: 'map',
-  style: MAPBOX_STYLE_URL
+  style: 'mapbox://styles/arnauines/clxn69hrc00id01r2c62dfyhr'
 });
 
 map.addControl(new mapboxgl.NavigationControl(), 'top-left');
