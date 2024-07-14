@@ -1,4 +1,5 @@
 // script.js
+
 mapboxgl.accessToken = window.MAPBOX_ACCESS_TOKEN;
 
 const filterMapping = {
@@ -10,6 +11,9 @@ const map = new mapboxgl.Map({
   container: 'map',
   style: window.MAPBOX_STYLE_URL
 });
+
+// El resto de tu código...
+
 
 map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
