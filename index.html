@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Resultados de las elecciones al Congreso del 23J, calle a calle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+  <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js'></script>
+  <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css' type='text/css'/>
+  <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-navigation/v0.0.2/mapbox-gl-navigation.min.js'></script>
+  <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="map"></div>
+  <div id="filter-container">
+    <label for="party-filter">Filtra por los partidos más votados:</label>
+    <select id="party-filter">
+      <option value="all">Todos los partidos</option>
+      <option value="PP">PP</option>
+      <option value="PSOE">PSOE</option>
+      <option value="VOX">VOX</option>
+      <option value="SUMAR">SUMAR</option>
+      <option value="ERC">ERC</option>
+      <option value="JxCAT-JUNTS">JxCAT-JUNTS</option>
+      <option value="EH-Bildu">EH-Bildu</option>
+      <option value="EAJ-PNV">EAJ-PNV</option>
+      <option value="B.N.G.">B.N.G.</option>
+      <option value="CCa">CCa</option>
+      <option value="U.P.N.">U.P.N.</option>
+    </select>
+  </div>
+  <div class="map-overlay" id="features">
+    <h2>
+      <img src="urna-electoral.png" alt="Imatge de flaticon.es" style="width: 18px; height: 18px; margin-right: 5px;">
+      Resultados de las elecciones al Congreso del 23J, calle a calle
+      <hr>
+    </h2>
+    <div id="pd">
+      <div class="info-container">
+        <p>100% escrutado</p>
+        <hr>
+        <p class="participacio-text">Mapa elaborado por <b>Arnau Inés</b> <a href="https://twitter.com/Suarsen" target="_blank">(@Suarsen)</a> con los datos del <b>Ministerio del Interior</b></p>
+      </div>
+    </div>
+  </div>
+  <div id="search-container" class="mapboxgl-ctrl"></div>
+  <div class="map-overlay" id="legend"></div>
+  <script src="script.js"></script>
+</body>
+</html>
