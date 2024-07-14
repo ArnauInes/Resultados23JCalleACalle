@@ -1,9 +1,6 @@
 // script.js
 
-const mapboxAccessToken = window.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
-const mapboxStyleUrl = window.NEXT_PUBLIC_MAPBOX_STYLE_URL;
-
-mapboxgl.accessToken = mapboxAccessToken;
+mapboxgl.accessToken = window.MAPBOX_ACCESS_TOKEN;
 
 const filterMapping = {
   'PSOE': ['PSOE', 'PSE-EE-(PSOE)', 'PSC', 'PSIB-PSOE', 'PSdeG-PSOE', 'PSN-PSOE'],
@@ -12,7 +9,7 @@ const filterMapping = {
 
 const map = new mapboxgl.Map({
   container: 'map',
-  style: mapboxStyleUrl
+  style: window.MAPBOX_STYLE_URL
 });
 
 
