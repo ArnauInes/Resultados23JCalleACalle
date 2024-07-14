@@ -4,13 +4,12 @@
   "description": "Despliegue de página web con Vercel",
   "main": "index.js",
   "scripts": {
-    "build": "node build.js"
+    "start": "serve public"
   },
   "dependencies": {
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "serve": "^13.0.2"
   },
   "author": "",
   "license": "ISC"
 }
-
-  
