@@ -1,6 +1,9 @@
 // script.js
 
-mapboxgl.accessToken = window.MAPBOX_ACCESS_TOKEN;
+const mapboxAccessToken = window.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+const mapboxStyleUrl = window.NEXT_PUBLIC_MAPBOX_STYLE_URL;
+
+mapboxgl.accessToken = mapboxAccessToken;
 
 const filterMapping = {
   'PSOE': ['PSOE', 'PSE-EE-(PSOE)', 'PSC', 'PSIB-PSOE', 'PSdeG-PSOE', 'PSN-PSOE'],
@@ -9,10 +12,8 @@ const filterMapping = {
 
 const map = new mapboxgl.Map({
   container: 'map',
-  style: window.MAPBOX_STYLE_URL
+  style: mapboxStyleUrl
 });
-
-// El resto de tu código...
 
 
 map.addControl(new mapboxgl.NavigationControl(), 'top-left');
