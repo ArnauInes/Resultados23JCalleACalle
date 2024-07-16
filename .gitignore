@@ -1,2 +1,2 @@
 # .gitignore
-.env.local
+config.js
