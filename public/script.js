@@ -272,7 +272,7 @@ function updatePopupContent(states) {
   document.getElementById('features').style.maxHeight = `${popupHeight + 80}px`;
 }
 
-map.on('click', (event) => {
+map.on('mousemove', (event) => {
   const features = map.queryRenderedFeatures(event.point);
   console.log(features);
   const isPopupOpen = document.getElementById('pd').contains(event.originalEvent.target);
