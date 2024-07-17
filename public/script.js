@@ -222,6 +222,7 @@ function getColor(partido) {
   }
 }
 
+
 function updatePopupContent(states) {
   const sortedProperties = Object.entries(states[0].properties)
     .filter(([key, value]) => 
@@ -272,7 +273,7 @@ function updatePopupContent(states) {
   document.getElementById('features').style.maxHeight = `${popupHeight + 80}px`;
 }
 
-map.on('click', (event) => {
+map.on('mousemove', (event) => {
   const features = map.queryRenderedFeatures(event.point);
   console.log(features);
   const isPopupOpen = document.getElementById('pd').contains(event.originalEvent.target);
@@ -282,6 +283,11 @@ map.on('click', (event) => {
     });
     if (states.length) {
       updatePopupContent(states);
+      // Añadir el contorno
+      map.setFeatureState(
+        { source: 'composite', sourceLayer: 'MapaResultats23JESP', id: states[0].id },
+        { hover: true }
+      );
     } else {
       const popupContent = `<p>100% escrutado</p><hr>
         <p class="participacio-text">Mapa elaborado por <b>Arnau Inés</b> <a href="https://twitter.com/Suarsen" target="_blank">(@Suarsen)</a> con los datos del <b>Ministerio del Interior</b></p>`;
@@ -325,4 +331,24 @@ document.getElementById('party-filter').addEventListener('change', function(even
 
 map.on('load', () => {
   updateMapFilter('all');
+  
+  // Añadir la capa de contorno
+  map.addLayer({
+    id: 'region-highlight',
+    type: 'line',
+    source: 'composite',
+    'source-layer': 'MapaResultats23JESP',
+    paint: {
+      'line-color': '#ff0000',
+      'line-width': 2
+    },
+    filter: ['==', 'hover', true]
+  });
+});
+
+map.on('mouseleave', 'MapaResultats23JESP', () => {
+  map.setFeatureState(
+    { source: 'composite', sourceLayer: 'MapaResultats23JESP' },
+    { hover: false }
+  );
 });
