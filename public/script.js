@@ -222,7 +222,6 @@ function getColor(partido) {
   }
 }
 
-
 function updatePopupContent(states) {
   const sortedProperties = Object.entries(states[0].properties)
     .filter(([key, value]) => 
