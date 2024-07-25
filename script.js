@@ -232,7 +232,6 @@ function updatePopupContent(features, lngLat) {
     const popupContent = `
     <h2>${properties.NMUN} (${properties.NPRO})</h2> 
     <h3> Distrito: ${properties.CDIS} | Sección: ${properties.CSEC} | Censo: ${formatNumberWithThousandsSeparator(properties.Censo)} electores </h3>
-    <h3 style="color: grey;">${properties.NCA}</h3>
     <h4> Participación: ${properties.Participacion.replace('.', ',')}% <span class="participacio-text">(${formatDifPercentatge(properties.DifParticipacion2019).replace('.', ',')} respecto al 2019)</span> </h4>
     <table>
       <tr>
