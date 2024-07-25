@@ -222,30 +222,19 @@ function getColor(partido) {
   }
 }
 
+function updatePopupContent(features, lngLat) {
+  const properties = features[0].properties;
 
-function updatePopupContent(states) {
-  const sortedProperties = Object.entries(states[0].properties)
-    .filter(([key, value]) => 
-      key !== 'MUNDISSEC' && 
-      key !== 'MUNICIPI' && 
-      !key.startsWith('Percentatge') && 
-      key !== 'DISTRICTE' && 
-      key !== 'NomComarca' && 
-      key !== 'NomMunicipi' && 
-      key !== 'PartitMesVotat' && 
-      key !== 'SECCIO' && 
-      key !== 'Cens' && 
-      key !== 'Participació' && 
-      key !== 'Vots a candidatures' &&
-      states[0].properties[`Percentatge${key}`] >= '0.50'
-    )
-    .sort((a, b) => b[1] - a[1]);
+  // Filtrar partidos con porcentaje menor al 0,5%
+  const sortedProperties = Object.keys(properties)
+    .filter(key => key.startsWith('Percentatge') && parseFloat(properties[key].replace(',', '.')) >= 1.0)
+    .sort((a, b) => parseFloat(properties[b].replace(',', '.')) - parseFloat(properties[a].replace(',', '.')));
 
-  const popupContent = `
-    <h2>${states[0].properties.NMUN} (${states[0].properties.NPRO})</h2> 
-    <h3> Distrito: ${states[0].properties.CDIS} | Sección: ${states[0].properties.CSEC} | Censo: ${formatNumberWithThousandsSeparator(states[0].properties.Censo)} electores </h3>
-    <h3 style="color: grey;">${states[0].properties.NCA}</h3>
-    <h4> Participación: ${states[0].properties.Participacion.replace('.', ',')}% <span class="participacio-text">(${formatDifPercentatge(states[0].properties.DifParticipacion2019).replace('.', ',')} respecto al 2019)</span> </h4>
+    const popupContent = `
+    <h2>${properties.NMUN} (${properties.NPRO})</h2> 
+    <h3> Distrito: ${properties.CDIS} | Sección: ${properties.CSEC} | Censo: ${formatNumberWithThousandsSeparator(properties.Censo)} electores </h3>
+    <h3 style="color: grey;">${properties.NCA}</h3>
+    <h4> Participación: ${properties.Participacion.replace('.', ',')}% <span class="participacio-text">(${formatDifPercentatge(properties.DifParticipacion2019).replace('.', ',')} respecto al 2019)</span> </h4>
     <table>
       <tr>
         <th style="text-align: center;">Partido</th>
@@ -253,47 +242,41 @@ function updatePopupContent(states) {
         <th style="text-align: center;">%</th>
         <th style="text-align: center;">Dif. 2019</th>
       </tr>
-      ${sortedProperties.map(([key, value]) => `
-        <tr>
-          <td>
-            <span class="legend-circle" style="background-color: ${getColor(key)}"></span>
-            <span class="bold-text ${getColorClass(key)}">${key}</span>
-          </td>
-          <td>${value}</td>
-          <td>${states[0].properties[`Percentatge${key}`].replace('.', ',')}%</td>
-          <td class="dif-value ${states[0] && states[0].properties && states[0].properties[`Dif${key}2019`] ? getDifClass(states[0].properties[`Dif${key}2019`]) : ''}">
-            ${states[0] && states[0].properties && states[0].properties[`Dif${key}2019`] ? formatDifValue(states[0].properties[`Dif${key}2019`]).replace('.', ',') : 'Valor no disponible'}
-          </td>
-        </tr>
-      `).join('')}
+      ${sortedProperties.map(key => {
+        const partido = key.replace('Percentatge', '');
+        return `
+          <tr>
+            <td>
+              <span class="legend-circle" style="background-color: ${getColor(partido)}"></span>
+              <span class="bold-text ${getColorClass(partido)}">${partido}</span>
+            </td>
+            <td>${properties[partido]}</td>
+            <td>${properties[key].replace('.', ',')}%</td>
+            <td class="dif-value ${getDifClass(properties[`Dif${partido}2019`])}">
+              ${properties[`Dif${partido}2019`] ? formatDifValue(properties[`Dif${partido}2019`]).replace('.', ',') : 'N/A'}
+            </td>
+          </tr>
+        `;
+      }).join('')}
     </table>
   `;
-  document.getElementById('pd').innerHTML = popupContent;
-  const popupHeight = document.getElementById('pd').scrollHeight;
-  document.getElementById('features').style.maxHeight = `${popupHeight + 80}px`;
+
+  new mapboxgl.Popup()
+    .setLngLat(lngLat)
+    .setHTML(popupContent)
+    .addTo(map);
 }
 
-map.on('mousemove', (event) => {
-  const features = map.queryRenderedFeatures(event.point);
-  console.log(features);
-  const isPopupOpen = document.getElementById('pd').contains(event.originalEvent.target);
-  if (!isPopupOpen) {
-    const states = map.queryRenderedFeatures(event.point, {
-      layers: ['MapaResultats23JESP']
-    });
-    if (states.length) {
-      updatePopupContent(states);
-      // Añadir el contorno
-      map.setFeatureState(
-        { source: 'composite', sourceLayer: 'MapaResultats23JESP', id: states[0].id },
-        { hover: true }
-      );
-    } else {
-      const popupContent = `<p>100% escrutado</p><hr>
-        <p class="participacio-text">Mapa elaborado por <b>Arnau Inés</b> <a href="https://twitter.com/Suarsen" target="_blank">(@Suarsen)</a> con los datos del <b>Ministerio del Interior</b></p>`;
-      document.getElementById('pd').innerHTML = popupContent;
-      document.getElementById('features').style.maxHeight = '150px';
-    }
+map.on('click', (event) => {
+  const features = map.queryRenderedFeatures(event.point, {
+    layers: ['MapaResultats23JESP']
+  });
+  
+  if (features.length) {
+    console.log(features); // Depura las características obtenidas
+    updatePopupContent(features, event.lngLat);
+  } else {
+    console.log("No se encontraron características en el punto clicado.");
   }
 });
 
@@ -309,7 +292,7 @@ geocoder.on('result', function (e) {
     layers: ['MapaResultats23JESP']
   });
   if (features.length) {
-    updatePopupContent(features);
+    updatePopupContent(features, point);
   }
 });
 
@@ -331,24 +314,4 @@ document.getElementById('party-filter').addEventListener('change', function(even
 
 map.on('load', () => {
   updateMapFilter('all');
-  
-  // Añadir la capa de contorno
-  map.addLayer({
-    id: 'region-highlight',
-    type: 'line',
-    source: 'composite',
-    'source-layer': 'MapaResultats23JESP',
-    paint: {
-      'line-color': '#ff0000',
-      'line-width': 2
-    },
-    filter: ['==', 'hover', true]
-  });
-});
-
-map.on('mouseleave', 'MapaResultats23JESP', () => {
-  map.setFeatureState(
-    { source: 'composite', sourceLayer: 'MapaResultats23JESP' },
-    { hover: false }
-  );
 });
