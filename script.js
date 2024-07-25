@@ -230,7 +230,7 @@ function updatePopupContent(features, lngLat) {
     .sort((a, b) => parseFloat(properties[b].replace(',', '.')) - parseFloat(properties[a].replace(',', '.')));
 
     const popupContent = `
-    <h2>${properties.NMUN} (${properties.NPRO})</h2> 
+    <h3>${properties.NMUN} (${properties.NPRO})</h3> 
     <h4> Distrito: ${properties.CDIS} | Sección: ${properties.CSEC} | Censo: ${formatNumberWithThousandsSeparator(properties.Censo)} electores </h4>
     <h4> Participación: ${properties.Participacion.replace('.', ',')}% <span class="participacio-text">(${formatDifPercentatge(properties.DifParticipacion2019).replace('.', ',')} respecto al 2019)</span> </h4>
     <table>
