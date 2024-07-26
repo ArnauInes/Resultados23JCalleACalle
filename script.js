@@ -1,6 +1,6 @@
 // script.js
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiYXJuYXVpbmVzIiwiYSI6ImNsdnFjY3hiMjBkbDQybG1oaDl1MmZxN3IifQ.w9MXQRTssGGK-k7y6OZQSQ';
+mapboxgl.accessToken = mapboxConfig.accessToken;
 
 const filterMapping = {
   'PSOE': ['PSOE', 'PSE-EE-(PSOE)', 'PSC', 'PSIB-PSOE', 'PSdeG-PSOE', 'PSN-PSOE'],
@@ -9,7 +9,7 @@ const filterMapping = {
 
 const map = new mapboxgl.Map({
   container: 'map',
-  style: 'mapbox://styles/arnauines/clxn69hrc00id01r2c62dfyhr'
+  style: mapboxConfig.styleURL
 });
 
 map.addControl(new mapboxgl.NavigationControl(), 'top-left');
