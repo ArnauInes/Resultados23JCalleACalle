@@ -226,7 +226,7 @@ function updatePopupContent(features, lngLat) {
 
   // Filtrar partidos con porcentaje menor al 0,5%
   const sortedProperties = Object.keys(properties)
-    .filter(key => key.startsWith('Percentatge') && parseFloat(properties[key].replace(',', '.')) >= 1.0)
+    .filter(key => key.startsWith('Percentatge') && parseFloat(properties[key].replace(',', '.')) >= 5.0)
     .sort((a, b) => parseFloat(properties[b].replace(',', '.')) - parseFloat(properties[a].replace(',', '.')));
 
     const popupContent = `
